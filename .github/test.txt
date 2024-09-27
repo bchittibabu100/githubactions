@@ -42,3 +42,7 @@ Sep 27 10:51:31 pldevlvault1.vpayusa.net systemd[1]: vault.service: Failed with 
 ░░ Support: https://access.redhat.com/support
 ░░
 ░░ The unit vault.service has entered the 'failed' state with result 'exit-code'.
+
+
+cboya1@pldevlvault1 ~ $sudo ls -l /usr/local/bin/vault
+-rwxr-xr-x. 1 root root 440966669 Aug 30 15:00 /usr/local/bin/vault
