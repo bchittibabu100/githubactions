@@ -1,14 +1,35 @@
-× vault.service - "HashiCorp Vault - A tool for managing secrets"
-     Loaded: loaded (/etc/systemd/system/vault.service; enabled; preset: disabled)
-     Active: failed (Result: exit-code) since Fri 2024-09-27 10:09:09 CDT; 4s ago
-   Duration: 12ms
-       Docs: https://www.vaultproject.io/docs/
-    Process: 1074307 ExecStart=/usr/local/bin/vault server -config=/etc/vault.d/vault.hcl (code=exited, status=203/EXEC)
-   Main PID: 1074307 (code=exited, status=203/EXEC)
-        CPU: 11ms
+[Unit]
+Description="HashiCorp Vault - A tool for managing secrets"
+Documentation=https://www.vaultproject.io/docs/
+Requires=network-online.target
+After=network-online.target
+ConditionFileNotEmpty=/etc/vault.d/vault.hcl
+StartLimitIntervalSec=60
+StartLimitBurst=3
 
-Sep 27 10:09:09 pldevlvault1 systemd[1]: vault.service: Scheduled restart job, restart counter is at 3.
-Sep 27 10:09:09 pldevlvault1 systemd[1]: Stopped "HashiCorp Vault - A tool for managing secrets".
-Sep 27 10:09:09 pldevlvault1 systemd[1]: vault.service: Start request repeated too quickly.
-Sep 27 10:09:09 pldevlvault1 systemd[1]: vault.service: Failed with result 'exit-code'.
-Sep 27 10:09:09 pldevlvault1 systemd[1]: Failed to start "HashiCorp Vault - A tool for managing secrets".
+[Service]
+User=vault
+Group=vault
+ProtectSystem=full
+ProtectHome=read-only
+PrivateTmp=yes
+PrivateDevices=yes
+SecureBits=keep-caps
+AmbientCapabilities=CAP_IPC_LOCK
+Capabilities=CAP_IPC_LOCK+ep
+CapabilityBoundingSet=CAP_SYSLOG CAP_IPC_LOCK
+NoNewPrivileges=yes
+ExecStart=/usr/local/bin/vault server -config=/etc/vault.d/vault.hcl
+ExecReload=/bin/kill --signal HUP
+KillMode=process
+KillSignal=SIGINT
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+StartLimitInterval=60
+StartLimitIntervalSec=60
+StartLimitBurst=3
+LimitNOFILE=65536
+LimitMEMLOCK=infinity
+[Install]
+WantedBy=multi-user.target
