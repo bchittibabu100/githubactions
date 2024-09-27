@@ -1,35 +1,44 @@
-[Unit]
-Description="HashiCorp Vault - A tool for managing secrets"
-Documentation=https://www.vaultproject.io/docs/
-Requires=network-online.target
-After=network-online.target
-ConditionFileNotEmpty=/etc/vault.d/vault.hcl
-StartLimitIntervalSec=60
-StartLimitBurst=3
-
-[Service]
-User=vault
-Group=vault
-ProtectSystem=full
-ProtectHome=read-only
-PrivateTmp=yes
-PrivateDevices=yes
-SecureBits=keep-caps
-AmbientCapabilities=CAP_IPC_LOCK
-Capabilities=CAP_IPC_LOCK+ep
-CapabilityBoundingSet=CAP_SYSLOG CAP_IPC_LOCK
-NoNewPrivileges=yes
-ExecStart=/usr/local/bin/vault server -config=/etc/vault.d/vault.hcl
-ExecReload=/bin/kill --signal HUP
-KillMode=process
-KillSignal=SIGINT
-Restart=on-failure
-RestartSec=5
-TimeoutStopSec=30
-StartLimitInterval=60
-StartLimitIntervalSec=60
-StartLimitBurst=3
-LimitNOFILE=65536
-LimitMEMLOCK=infinity
-[Install]
-WantedBy=multi-user.target
+cboya1@pldevlvault1 ~ $sudo journalctl -u vault.service -xe
+░░ Subject: Unit failed
+░░ Defined-By: systemd
+░░ Support: https://access.redhat.com/support
+░░
+░░ The unit vault.service has entered the 'failed' state with result 'exit-code'.
+Sep 27 10:51:31 pldevlvault1.vpayusa.net systemd[1]: Started "HashiCorp Vault - A tool for managing secrets".
+░░ Subject: A start job for unit vault.service has finished successfully
+░░ Defined-By: systemd
+░░ Support: https://access.redhat.com/support
+░░
+░░ A start job for unit vault.service has finished successfully.
+░░
+░░ The job identifier is 779809.
+Sep 27 10:51:31 pldevlvault1.vpayusa.net systemd[1076106]: vault.service: Failed to locate executable /usr/local/bin/vault: Permission denied
+░░ Subject: Process /usr/local/bin/vault could not be executed
+░░ Defined-By: systemd
+░░ Support: https://access.redhat.com/support
+░░
+░░ The process /usr/local/bin/vault could not be executed and failed.
+░░
+░░ The error number returned by this process is ERRNO.
+Sep 27 10:51:31 pldevlvault1.vpayusa.net systemd[1076106]: vault.service: Failed at step EXEC spawning /usr/local/bin/vault: Permission denied
+░░ Subject: Process /usr/local/bin/vault could not be executed
+░░ Defined-By: systemd
+░░ Support: https://access.redhat.com/support
+░░
+░░ The process /usr/local/bin/vault could not be executed and failed.
+░░
+░░ The error number returned by this process is ERRNO.
+Sep 27 10:51:31 pldevlvault1.vpayusa.net systemd[1]: vault.service: Main process exited, code=exited, status=203/EXEC
+░░ Subject: Unit process exited
+░░ Defined-By: systemd
+░░ Support: https://access.redhat.com/support
+░░
+░░ An ExecStart= process belonging to unit vault.service has exited.
+░░
+░░ The process' exit code is 'exited' and its exit status is 203.
+Sep 27 10:51:31 pldevlvault1.vpayusa.net systemd[1]: vault.service: Failed with result 'exit-code'.
+░░ Subject: Unit failed
+░░ Defined-By: systemd
+░░ Support: https://access.redhat.com/support
+░░
+░░ The unit vault.service has entered the 'failed' state with result 'exit-code'.
